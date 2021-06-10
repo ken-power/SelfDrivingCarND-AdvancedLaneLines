@@ -98,7 +98,8 @@ class Pipeline:
                                     binary_image,
                                     birdseye_image,
                                     birdseye_with_lane_lines,
-                                    image_with_detected_lane)
+                                    image_with_detected_lane,
+                                    final_image)
 
         self.hyperparameters.image_frame_number += 1
 
@@ -122,7 +123,7 @@ class Pipeline:
 
     def handle_pipeline_images(self, original_image, undistorted_image, binary_image, birdseye_image,
                                birdseye_highlighted_lanes,
-                               lane_area_on_road_img):
+                               lane_area_on_road_img, final_image):
         if self.debug_pipeline_images:
             self.plotter.plot_5_images_side_by_side_cmap(
                 undistorted_image, "Frame #{}: undistorted".format(self.hyperparameters.image_frame_number),
@@ -134,13 +135,13 @@ class Pipeline:
 
         if self.save_pipeline_images_to_disk:
             self.save_frames(original_image, undistorted_image, binary_image, birdseye_image,
-                             birdseye_highlighted_lanes, lane_area_on_road_img)
+                             birdseye_highlighted_lanes, lane_area_on_road_img, final_image)
 
     def save_frames(self, original_image, undistorted_image, binary_image, birdseye_image, birdseye_highlighted_lanes,
-                    lane_area_on_road_img):
-        base_dir = PATH_ROOT + "data/test_pipeline_images/harder_challenge/"
+                    lane_area_on_road_img, final_image):
+        base_dir = PATH_ROOT + "data/test_pipeline_images/images_from_project_video/"
         file_ext = ".jpg"
-        frames_to_save = []
+        frames_to_save = [20, 111, 314, 553, 607, 740, 949, 989, 1016, 1036, 1118, 1260]
         if self.hyperparameters.image_frame_number in frames_to_save:
             plt.imsave(base_dir + "{}_0_original{}".format(self.hyperparameters.image_frame_number, file_ext),
                        original_image)
@@ -157,3 +158,6 @@ class Pipeline:
             plt.imsave(
                 base_dir + "{}_5_highlighted_area{}".format(self.hyperparameters.image_frame_number, file_ext),
                 lane_area_on_road_img)
+            plt.imsave(
+                base_dir + "{}_6_final_image{}".format(self.hyperparameters.image_frame_number, file_ext),
+                final_image)
