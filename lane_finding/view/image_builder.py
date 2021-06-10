@@ -100,7 +100,7 @@ class ImageBuilder:
         # add a rectangle to the upper area of the image
         mask = main_img.copy()
         mask = cv2.rectangle(mask, pt1=(0, 0), pt2=(w, inset_h + 4 * y_offset), color=(0, 0, 0), thickness=cv2.FILLED)
-        main_img = cv2.addWeighted(src1=mask, alpha=0.2, src2=main_img, beta=0.8, gamma=0)
+        main_img = cv2.addWeighted(src1=mask, alpha=0.4, src2=main_img, beta=0.8, gamma=0.4)
 
         # add undistorted image
         undistorted_inset = cv2.resize(undistorted_img, dsize=(inset_w, inset_h))
@@ -133,7 +133,7 @@ class ImageBuilder:
         """
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 0.75
-        font_color = (255, 0, 255)
+        font_color = (255, 255, 255)
         font_thickness = 1
         line_type = cv2.LINE_AA
 
@@ -160,8 +160,8 @@ class ImageBuilder:
         Add text to the main image
         """
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.5
-        font_color = (255, 0, 255)
+        font_scale = 0.8
+        font_color = (255, 255, 255)
         font_thickness = 1
         line_type = cv2.LINE_AA
 
@@ -188,7 +188,7 @@ class ImageBuilder:
         """
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 0.75
-        font_color = (255, 0, 255)
+        font_color = (30, 30, 30)
         font_thickness = 1
         line_type = cv2.LINE_AA
 
