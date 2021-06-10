@@ -124,16 +124,16 @@ Undistorted Image | Thresholded Binary Image
 ### Perspective transform
 * Apply a perspective transform to rectify binary image ("birds-eye view").
 
-Undistorted Image | Perspective Transform
+Thresholded Binary Image | Perspective Transform
 --- | ---
-![Frame 20 Undistorted](data/test_pipeline_images/images_from_project_video/20_1_undistorted.jpg) | ![Frame 20 Birdseye](data/test_pipeline_images/images_from_project_video/20_3_birdseye.jpg) 
+![Frame 20 Binary](data/test_pipeline_images/images_from_project_video/20_2_binary.jpg) | ![Frame 20 Birdseye](data/test_pipeline_images/images_from_project_video/20_3_birdseye.jpg) 
 
 ### Identify lane pixels
 * Detect lane pixels and fit to find the lane boundary.
 
-Undistorted Image | Lane Boundary
+Perspective Transform | Lane Boundary
 --- | ---
-![Frame 20 Undistorted](data/test_pipeline_images/images_from_project_video/20_1_undistorted.jpg) | ![Frame 20 Birdseye](data/test_pipeline_images/images_from_project_video/20_4_birdseye_lanes.jpg) 
+![Frame 20 Birdseye](data/test_pipeline_images/images_from_project_video/20_3_birdseye.jpg)  | ![Frame 20 Birdseye](data/test_pipeline_images/images_from_project_video/20_4_birdseye_lanes.jpg) 
 
 ### Radius of curvature
 * Determine the curvature of the lane and vehicle position with respect to center.
@@ -167,7 +167,7 @@ Here are some more examples of final image frames from my project video output. 
 ![Final Output Image Frmae 553](data/test_pipeline_images/images_from_project_video/553_6_final_image.jpg)
 
 #### Frame 607
-**Scenario**: Transitioning from an area of road with a lot of bright light causing glare on the road, back to more favorable lighting conditions.
+**Scenario**: Transitioning from an area of road with a lot of bright light causing glare on the road, back to more favorable lighting conditions, and bending to the right up ahead.
 
 ![Final Output Image Frmae 607](data/test_pipeline_images/images_from_project_video/607_6_final_image.jpg)
 
