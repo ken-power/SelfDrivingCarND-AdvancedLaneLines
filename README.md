@@ -49,7 +49,7 @@ The camera calibration matrix and distortion coefficients are computed when the 
 self.camera_matrix, self.distortion_coefficients = self.camera_calibrator.calibrate()
 ```
 
-The `process()` function in the [Pipeline](lane_finding/controller/pipeline.py) class is hte main controller for executing the pipeline.
+The `process()` function in the [Pipeline](lane_finding/controller/pipeline.py) class is the main controller for executing the pipeline.
 ```python
 # STEP 1. Undistort the image using the coefficients found in camera calibration
 undistorted_image = self.image_undistorter.undistort(image, self.camera_matrix, self.distortion_coefficients)
