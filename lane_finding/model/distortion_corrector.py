@@ -1,7 +1,7 @@
 import cv2
 
 
-class ImageUndistorter:
+class DistortionCorrector:
     """
     Encapsulate the process of undistorting images.
     """

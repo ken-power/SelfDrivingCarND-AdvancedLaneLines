@@ -36,7 +36,7 @@ lane_finding/
   |--controller/
 ```
 
-* [Model](lane_finding/model) contains the core abstractions for camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py)), image undistorting ([ImageUndistorter](lane_finding/model/image_undistorter.py)), color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py)), perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py)), lanes ([Lane](lane_finding/model/lane.py)), and lane lines ([Line](lane_finding/model/line.py)).
+* [Model](lane_finding/model) contains the core abstractions for camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py)), distortion correction ([DistortionCorrector](lane_finding/model/distortion_corrector.py)), color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py)), perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py)), lanes ([Lane](lane_finding/model/lane.py)), and lane lines ([Line](lane_finding/model/line.py)).
 * [View](lane_finding/view) contains two classes that manage the presentation logic. [ImagePlotter](lane_finding/view/image_plotter.py) takes care of plotting images, and provides a number of utility functions for plotting various image combinations. [ImageBuilder](lane_finding/view/image_builder.py) is that class that builds the final output image with the lane highlihgted on the road. This class manages the overlay of inset images and text on the main image. 
 * [Controller](lane_finding/controller) contains the [Pipeline](lane_finding/controller/pipeline.py) class and a [HyperParameters](lane_finding/controller/hyperparameters.py) class. [Pipeline](lane_finding/controller/pipeline.py) processes images through the pipeline.  [HyperParameters](lane_finding/controller/hyperparameters.py) contains parameters that allow us to tune the image processing pipeline for different scenarios. For example, I use the same pipeline code on all three videos for this project, but tune the hyperparameters differently for each video. Examples [are shown below](#Project-video).
 
@@ -50,9 +50,10 @@ self.camera_matrix, self.distortion_coefficients = self.camera_calibrator.calibr
 ```
 
 The `process()` function in the [Pipeline](lane_finding/controller/pipeline.py) class is the main controller for executing the pipeline.
+
 ```python
 # STEP 1. Undistort the image using the coefficients found in camera calibration
-undistorted_image = self.image_undistorter.undistort(image, self.camera_matrix, self.distortion_coefficients)
+undistorted_image = self.distortion_corrector.undistort(image, self.camera_matrix, self.distortion_coefficients)
 
 # STEP 2. Apply thresholds to create a binary image, getting the binary image to highlight the lane lines as
 # much as possible

@@ -4,7 +4,7 @@ import numpy as np
 from lane_finding.config.config_data import PATH_ROOT
 from lane_finding.model.camera_calibrator import CameraCalibrator
 from lane_finding.model.color_threshold_converter import ColorThresholdConverter
-from lane_finding.model.image_undistorter import ImageUndistorter
+from lane_finding.model.distortion_corrector import DistortionCorrector
 from lane_finding.model.lane import Lane
 from lane_finding.model.perspective_transformer import PerspectiveTransformer
 from lane_finding.view.image_builder import ImageBuilder
@@ -25,7 +25,7 @@ class Pipeline:
         self.CALIBRATION_IMAGES_DIR = calibration_images_dir
 
         self.camera_calibrator = CameraCalibrator(self.CALIBRATION_IMAGES_DIR)
-        self.image_undistorter = ImageUndistorter()
+        self.distortion_corrector = DistortionCorrector()
         self.perspective_transformer = PerspectiveTransformer()
         self.threshold_converter = ColorThresholdConverter()
         self.lane = Lane(self.hyperparameters)
@@ -54,7 +54,7 @@ class Pipeline:
         :return: combined output image with detected lane overlaid on the road surface
         """
         # STEP 1. Undistort the image using the coefficients found in camera calibration
-        undistorted_image = self.image_undistorter.undistort(image, self.camera_matrix, self.distortion_coefficients)
+        undistorted_image = self.distortion_corrector.undistort(image, self.camera_matrix, self.distortion_coefficients)
 
         # STEP 2. Apply thresholds to create a binary image, getting the binary image to highlight the lane lines as
         # much as possible
