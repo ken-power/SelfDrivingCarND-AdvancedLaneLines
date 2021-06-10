@@ -1,0 +1,8 @@
+
+.idea
+.DS_Store
+
+.idea/encodings.xml
+.ipynb_checkpoints
+__pycache__/
+tests/
