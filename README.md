@@ -130,7 +130,8 @@ The input video is [here](data/test_videos/project_video.mp4).
 The output video is [here](output_videos/out_project_video.mp4):
 
 You can watch the output of the pipeline applied to the project video on YouTube:
-[![Output of project video]](https://youtu.be/kzYbIra3nH8)
+[![Output of project video](https://img.youtube.com/vi/kzYbIra3nH8/0.jpg)]
+(https://youtu.be/kzYbIra3nH8)
 
 
 ### Optional challenge videos
@@ -145,7 +146,8 @@ The input video is [here](data/test_videos/challenge_video.mp4).
 The output video is [here](output_videos/out_challenge_video.mp4):
 
 You can watch the output of the pipeline applied to the challenge video on YouTube:
-[![Challenge output]](https://youtu.be/M7CPvri28hE)
+[![Challenge output](https://img.youtube.com/vi/M7CPvri28hE/0.jpg)]
+(https://youtu.be/M7CPvri28hE)
 
 
 #### Harder challenge video
@@ -154,7 +156,8 @@ The input video is [here](data/test_videos/harder_challenge_video.mp4).
 The output video is [here](output_videos/out_harder_challenge_video.mp4):
 
 You can watch the output of the pipeline applied to the harder challenge video on YouTube:
-[![Harder challenge output]](https://youtu.be/Q1qdfA6N8Iw)
+[![Harder challenge output](https://img.youtube.com/vi/Q1qdfA6N8Iw/0.jpg)]
+(https://youtu.be/Q1qdfA6N8Iw)
 
 ## Discussion
 
