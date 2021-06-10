@@ -1,4 +1,4 @@
-PATH_ROOT                  = '../../../'
+PATH_ROOT                  = './'
 
 # Input locations
 DATA_DIR                    = PATH_ROOT + 'data'
