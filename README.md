@@ -129,6 +129,9 @@ The input video is [here](data/test_videos/project_video.mp4).
 
 The output video is [here](output_videos/out_project_video.mp4):
 
+You can watch the output of the pipeline applied to the project video on YouTube:
+![](https://youtu.be/kzYbIra3nH8)
+
 
 ### Optional challenge videos
 
@@ -141,11 +144,17 @@ The input video is [here](data/test_videos/challenge_video.mp4).
 
 The output video is [here](output_videos/out_challenge_video.mp4):
 
+You can watch the output of the pipeline applied to the challenge video on YouTube:
+![](https://youtu.be/M7CPvri28hE)
+
 
 #### Harder challenge video
 The input video is [here](data/test_videos/harder_challenge_video.mp4).
 
 The output video is [here](output_videos/out_harder_challenge_video.mp4):
+
+You can watch the output of the pipeline applied to the harder challenge video on YouTube:
+![](https://youtu.be/Q1qdfA6N8Iw)
 
 ## Discussion
 
