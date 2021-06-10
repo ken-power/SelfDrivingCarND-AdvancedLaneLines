@@ -93,8 +93,6 @@ final_image = self.image_builder.add_overlays_to_main_image(image_with_detected_
                                                             self.hyperparameters.image_frame_number)
 ```
 
-# Writeup
-
 ## Camera calibration
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 
@@ -472,11 +470,28 @@ Here are some more examples of final image frames from my project video output. 
 
 
 ## Pipeline video
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+The video pipeline outputs a visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position. The file [process_video.py](process_video.py) contains the code that exectures the pipeline for each of the three test videos provided. 
+
+
 
 ### Project video
 
 The input video is [here](data/test_videos/project_video.mp4). The output video is [here](output_videos/out_project_video.mp4):
+
+The code to run this video through the pipeline is in the `PipelineVideoTests` class in the [process_video.py](process_video.py) file.
+```python
+def test_project_video(self):
+    params = Hyperparameters()
+
+    pipeline = Pipeline(CALIBRATION_IMAGES_DIR, params, debug_pipeline_images=self.debug_images)
+    video_name = 'project_video.mp4'
+    video_file_path = TEST_VIDEOS_DIR + '/' + video_name
+
+    clip = VideoFileClip(video_file_path).fl_image(pipeline.process)
+    clip.write_videofile(VIDEO_OUTPUT_FILE_BASE_PATH + video_name, audio=self.enable_audio)
+```
+
+I tuned the hyperparameters to optimize for the primary project video. Their default values work well for this video, so there is not need to explicitly set them 
 
 You can watch the output of the pipeline applied to the project video on YouTube:
 [![Output of project video](https://img.youtube.com/vi/kzYbIra3nH8/0.jpg)](https://youtu.be/kzYbIra3nH8 "Project video")
@@ -491,8 +506,32 @@ The [challenge_video.mp4](data/test_videos/challenge_video.mp4) video is an extr
 
 The input video is [here](data/test_videos/challenge_video.mp4). The output video is [here](output_videos/out_challenge_video.mp4):
 
+
 You can watch the output of the pipeline applied to the challenge video on YouTube:
 [![Challenge output](https://img.youtube.com/vi/M7CPvri28hE/0.jpg)](https://youtu.be/M7CPvri28hE "Challenge video")
+
+The code to run this video through the pipeline is in the `PipelineVideoTests` class in the [process_video.py](process_video.py) file. Here you can see the hyperparameter values I set for this video.
+```python
+def test_challenge_video(self):
+    params = Hyperparameters()
+    params.lane().set_meters_per_pixel_y(20, 700)
+    params.lane().set_meters_per_pixel_x(3.2, 675)
+    params.lane().set_margin_first_frame(100)
+    params.lane().set_margin_second_frame(80)
+    params.lane().set_num_windows(35)
+    params.lane().set_lane_projection_width(350, 710)
+    params.lane().set_poly_fit_val(300)
+    params.thresholding().set_sobel_threshold(130, 250)
+    params.thresholding().set_sobelx_threshold(10, 150)
+    params.thresholding().set_sobel_kernel_size(5)
+
+    pipeline = Pipeline(CALIBRATION_IMAGES_DIR, params, debug_pipeline_images=self.debug_images)
+    video_name = 'challenge_video.mp4'
+    video_file_path = TEST_VIDEOS_DIR + '/' + video_name
+
+    clip = VideoFileClip(video_file_path).fl_image(pipeline.process)
+    clip.write_videofile(VIDEO_OUTPUT_FILE_BASE_PATH + video_name, audio=self.enable_audio)
+```
 
 
 #### Harder challenge video
@@ -500,6 +539,32 @@ The input video is [here](data/test_videos/harder_challenge_video.mp4). The outp
 
 You can watch the output of the pipeline applied to the harder challenge video on YouTube:
 [![Harder challenge output](https://img.youtube.com/vi/Q1qdfA6N8Iw/0.jpg)](https://youtu.be/Q1qdfA6N8Iw "Harder challenge video")
+
+The code to run this video through the pipeline is in the `PipelineVideoTests` class in the [process_video.py](process_video.py) file. Here you can see the hyperparameter values I set for this video.
+```python
+def test_harder_challenge_video(self):
+    params = Hyperparameters()
+    params.lane().set_meters_per_pixel_y(4, 420)
+    params.lane().set_meters_per_pixel_x(1.2, 400)
+    params.lane().set_margin_first_frame(90)
+    params.lane().set_margin_second_frame(75)
+    params.lane().set_num_windows(50)
+    params.lane().set_minipix_first_frame(20)
+    params.lane().set_minipix_second_frame(25)
+    params.lane().set_lane_projection_width(350, 680)
+    params.lane().set_poly_fit_val(200)
+    params.thresholding().set_sobel_threshold(130, 220)
+    params.thresholding().set_sobelx_threshold(25, 201)
+    params.thresholding().set_sobel_kernel_size(3)
+    params.thresholding().set_thresholding_function(3)
+
+    pipeline = Pipeline(CALIBRATION_IMAGES_DIR, params, debug_pipeline_images=self.debug_images)
+    video_name = 'harder_challenge_video.mp4'
+    video_file_path = TEST_VIDEOS_DIR + '/' + video_name
+
+    clip = VideoFileClip(video_file_path).fl_image(pipeline.process)
+    clip.write_videofile(VIDEO_OUTPUT_FILE_BASE_PATH + video_name, audio=self.enable_audio)
+```
 
 ## Discussion
 
