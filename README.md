@@ -19,12 +19,27 @@ The goals / steps of this project are the following:
 
 
 
-# Code structure
+# Solution overview
 The code is in a module called `lane_finding` which is in the [lane_finding](lane_finding) directory. 
 
-There are two files that run the `lane_finding` module:
+There are two files that execute the `lane_finding` module:
 * [process_images.py](process_images.py) executes the `lane_finding` module and runs the set of test images through the image processing pipeline.
 * [process_video.py](process_video.py) executes the `lane_finding` module and runs the three test videos through the image processing pipeline.
+
+## Code structure
+The design of the lane finding module follows a basic Model-View-Controller pattern. This directory layout reflects this pattern, with each part in its own sub-directory:
+```text
+lane_finding/
+  |
+  |--model/
+  |--view/
+  |--controller/
+```
+
+* [Model](lane_finding/model) contains the core abstractions for camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py)), image undistorting ([ImageUndistorter](lane_finding/model/image_undistorter.py)), color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py)), perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py)), lanes ([Lane](lane_finding/model/lane.py)), and lane lines ([Line](lane_finding/model/line.py)).
+* [View](lane_finding/view) contains two classes that manage the presentation logic. [ImagePlotter](lane_finding/view/image_plotter.py) takes care of plotting images, and provides a number of utility functions for plotting various image combinations. [ImageBuilder](lane_finding/view/image_builder.py) is that class that builds the final output image with the lane highlihgted on the road. This class manages the overlay of inset images and text on the main image. 
+* [Controller](lane_finding/controller) contains the [Pipeline](lane_finding/controller/pipeline.py) class and a [HyperParameters](lane_finding/controller/hyperparameters.py) class. [Pipeline](lane_finding/controller/pipeline.py) processes images through the pipeline.  [HyperParameters](lane_finding/controller/hyperparameters.py) contains parameters that allow us to tune the image processing pipeline for different scenarios. For example, I use the same pipeline code on all three videos for this project, but tune the hyperparameters differently for each video. Examples [are shown below](#Project-video).
+
 
 ## Pipeline summary
 
