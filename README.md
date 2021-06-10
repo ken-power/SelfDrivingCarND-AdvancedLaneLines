@@ -113,7 +113,6 @@ The input video is [here](data/test_videos/project_video.mp4).
 
 The output video is [here](output_videos/out_project_video.mp4):
 
-![project video output](output_videos/out_project_video.mp4)
 
 ### Optional challenge videos
 
