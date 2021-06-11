@@ -677,6 +677,62 @@ def test_harder_challenge_video(self):
 
 # Discussion
 
+The  [project video](#project-video) turned out quite well. The pipeline adapts nicely to changing road conditions.
+
+The [challenge video](#challenge-video) and the [harder challenge video](#harder-challenge-video) required a lot more work. The rapidly-changing road environment presented a bigger challenge than the main project video.  Tuning the [hyperparameters](#hyperparameter-default-values) was instrumental in getting something working for them.  
+
+I also implemented some very rudimentary error checking in the [Lane](lane_finding/model/lane.py) class in an attempt to handle these conditions. I focused on 5 scenarios:
+1. Left line crossed center threshold
+2. Right line crossed center threshold
+3. Left line crossed center of image
+4. Right line crossed center of image
+5. (Right line x) - (Left line x) not wide enough for a vehicle
+
+```python
+    def _handle_difficult_road_conditions(self, binary_warped, left_fitx, prev_lane, prev_lane_copy, right_fitx):
+        lane_center_position = (left_fitx + right_fitx) // 2
+        center_threshold = 100
+        min_vehicle_width = 400
+        image_center_x = 600
+        pixel_num = 20
+
+        if left_fitx[pixel_num] > (lane_center_position[pixel_num] - center_threshold):
+            print("\t - Left line crossed center threshold")
+            self._reset_and_go_back_to_sliding_window(binary_warped, prev_lane, prev_lane_copy)
+
+        if right_fitx[pixel_num] < (lane_center_position[pixel_num] - center_threshold):
+            print("\t - Right line crossed center threshold")
+            self._reset_and_go_back_to_sliding_window(binary_warped, prev_lane, prev_lane_copy)
+
+        if left_fitx[pixel_num] >= image_center_x:
+            print("\t - Left line crossed center of image")
+            self._reset_and_go_back_to_sliding_window(binary_warped, prev_lane, prev_lane_copy)
+
+        if right_fitx[pixel_num] <= image_center_x:
+            print("\t - Right line crossed center of image")
+            self._reset_and_go_back_to_sliding_window(binary_warped, prev_lane, prev_lane_copy)
+
+        if right_fitx[pixel_num] - left_fitx[pixel_num] < min_vehicle_width:
+            print("\t - (Right line x) - (Left line x) not wide enough for a vehicle")
+            self._reset_and_go_back_to_sliding_window(binary_warped, prev_lane, prev_lane_copy)
+```
+I also tried some things in the code like dynamically changing the projected lane distance for situations where the vehicle is taking sharp corners for prolonged periods, and there is not much visible road in front.
+
+These helped somewhat, and it is interesting to see the debug trace when running the pipeline. Trying more robust error handling should help rec
+
+### Note on edge detection and Sobel
+My implementation uses the Sobel operator (also known as the Sobel–Feldman operator) for edge detection. The Sobel–Feldman operator is based on convolving the image with a small, separable, and integer-valued filter in the horizontal and vertical directions and is relatively inexpensive in terms of computations. On the other hand, the gradient approximation that it produces is relatively crude, in particular for high-frequency variations in the image. 
+
+The effects of this can be seen in the [project video](#project-video) when the car passes through areas of road that are very bright. However, we can recover pretty seamlessly in these conditions by reverting to finding lane lines using sliding windows. The problem is more evident in the [challenge video](#challenge-video) and is a major problem in the [harder challenge video](#harder-challenge-video), where the changing road and lighting conditions are very dynamic and varied. 
+
+Trying different edge detection algorithms in the pipeline should help improve 
 # References
 
+* Shelhamer, E., Long, J. and Darrell, T., 2016. Fully convolutional networks for semantic segmentation.
+* Lee, S., Kim, J., Shin Yoon, J., Shin, S., Bailo, O., Kim, N., Lee, T.H., Seok Hong, H., Han, S.H. and So Kweon, I., 2017. Vpgnet: Vanishing point guided network for lane and road marking detection and recognition. In Proceedings of the IEEE international conference on computer vision (pp. 1947-1955).
+* Palazzi, A., Borghi, G., Abati, D., Calderara, S. and Cucchiara, R., 2017, September. Learning to map vehicles into bird’s eye view. In International Conference on Image Analysis and Processing (pp. 233-243). Springer, Cham.
+* Aminuddin, N.S., Ibrahim, M.M., Ali, N.M., Radzi, S.A., Saad, W.H.M. and Darsono, A.M., 2017. A new approach to highway lane detection by using Hough transform technique. Journal of Information and Communication Technology, 16(2), pp.244-260.
+* Kumar, A.M. and Simon, P., 2015. Review of lane detection and tracking algorithms in advanced driver assistance system. International Journal of Computer Science & Information Technology (IJCSIT), 7(4), pp.65-78. Vancouver
+* Phueakjeen, W., Jindapetch, N., Kuburat, L. and Suvanvorn, N., 2011, May. A study of the edge detection for road lane. In The 8th Electrical Engineering/Electronics, Computer, Telecommunications and Information Technology (ECTI) Association of Thailand-Conference 2011 (pp. 995-998). IEEE.
+* Wikipedia. [Sobel operator](https://en.wikipedia.org/wiki/Sobel_operator)
 
