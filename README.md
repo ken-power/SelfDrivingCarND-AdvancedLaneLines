@@ -31,9 +31,21 @@ The design of the lane finding module follows a basic Model-View-Controller patt
 ```text
 lane_finding/
   |
-  |--model/
-  |--view/
-  |--controller/
+  |-- model/
+     |-- camera_calibrator
+     |-- distortion_corrector
+     |-- color_threshold_converter
+     |-- perspective_transformer
+     |-- lane
+     |-- line
+  |-- view/
+     |-- image_builder
+     |-- image_plotter
+  |-- controller/
+     |-- pipeline
+     |-- hyperparameters
+  |-- config/
+     |-- config_data
 ```
 
 * [Model](lane_finding/model) contains the core abstractions for camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py)), distortion correction ([DistortionCorrector](lane_finding/model/distortion_corrector.py)), color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py)), perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py)), lanes ([Lane](lane_finding/model/lane.py)), and lane lines ([Line](lane_finding/model/line.py)).
@@ -94,14 +106,14 @@ final_image = self.image_builder.add_overlays_to_main_image(image_with_detected_
 ```
 
 ## Camera calibration
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
+Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 
 Udacity provided two sets of images for testing. The folder called [camera_cal](data/camera_cal) contains the images for camera calibration.  The images in [test_images](data/test_images) are for testing the pipeline on single frames.  
 
 In addition to these I created my own set of images for testing by saving image frames of the test videos.
-* The [data/test_pipeline_images](data/test_pipeline_images) contains the images I generated for testing. 
+* The [test_pipeline_images](data/test_pipeline_images) contains the images I generated for testing. 
 * For each frame, there is an undistorted image, binary image, birdseye transform image, birdseye transform with highlihgted lanes, and an image that shows the lane projected onto the road surface.
-* The [data/test_pipeline_images/images_from_project_video](data/test_pipeline_images/images_from_project_video) contains a set of images captured from specific frames of my output video. In addition to images for all of the intermediate pipeline steps, there are images for the original input frame and the finale combined result image frame.  
+* The [images_from_project_video](data/test_pipeline_images/images_from_project_video) contains a set of images captured from specific frames of my output video. In addition to images for all of the intermediate pipeline steps, there are images for the original input frame and the finale combined result image frame.  
 
 
 ```python
@@ -150,6 +162,7 @@ class CameraCalibrator:
 The full source code for the [CameraCalibrator](lane_finding/model/camera_calibrator.py) is in the file [camera_calibrator.py](lane_finding/model/camera_calibrator.py).
 
 
+
 ## Pipeline
 
 ### Distortion correction
@@ -193,6 +206,24 @@ class DistortionCorrector:
         return undistorted_image
 ```
 
+![Calibrated Chessboard Images](output_images/calibrated_chessboard_images.png)
+
+Note that three of the images appear empty in the results because not all internal corners are visible in their respective input images. This refers specifically to images 1, 4, and 5 from the test calibration image set, as shown here:
+
+image 1 | image 4 | image 5
+:--- | :--- | :---
+![](data/camera_cal/calibration1.jpg) | ![](data/camera_cal/calibration4.jpg) | ![](data/camera_cal/calibration5.jpg)
+
+Some additional examples of calibrated chessboard images are shown here:
+![](output_images/out_calibration_test_1.png)
+
+![](output_images/out_calibration_test_2.png)
+
+These next examples show road images before and after calibration:
+![](output_images/calibration_road_examples.png)
+
+The sections below show many more examples of calibrated images moving through the pipeline.
+
 ### Thresholded binary image
 The next step in the pipeline uses color transforms, gradients, etc., to create a thresholded binary image.
 
@@ -206,6 +237,7 @@ binary_image = self.threshold_converter.binary_image(undistorted_image, self.hyp
 Undistorted Image | Thresholded Binary Image
 --- | ---
 ![Frame 20 Undistorted](data/test_pipeline_images/images_from_project_video/20_1_undistorted.jpg) | ![Frame 20 Binary](data/test_pipeline_images/images_from_project_video/20_2_binary.jpg) 
+
 
 The code that performs the conversion from the undistorted image to a binary image is in the [ColorThresholdConverter](lane_finding/model/color_threshold_converter.py) class. The `binary_image()` function is the primary entry point that returns the binary image. It serves as a simple facade that delegates to the `convert_to_binary()` function. 
 
