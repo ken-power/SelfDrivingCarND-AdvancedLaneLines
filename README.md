@@ -19,6 +19,7 @@ This project is part of [Udacity](https://www.udacity.com)'s [Self-driving Car E
   * [Additional examples](#Additional-examples)
 * [Pipeline video](#Pipeline-video)
   * [Project video](#Project-video)
+    * [Hyperparameter default values](#Hyperparameter-default-values)
   * [Optional challenge videos](#Optional-challenge-videos)
     * [Challenge video](#Challenge-video)
     * [Harder challenge video](#Harder-challenge-video)
@@ -560,7 +561,46 @@ def test_project_video(self):
     clip.write_videofile(VIDEO_OUTPUT_FILE_BASE_PATH + video_name, audio=self.enable_audio)
 ```
 
-I tuned the hyperparameters to optimize for the primary project video. Their default values work well for this video, so there is not need to explicitly set them 
+I tuned the hyperparameters to optimize for the primary project video, so there is no need to explicitly set them. 
+
+### Hyperparameter default values
+
+These are the default values for the hyperparameters relating to lanes:
+```python
+        # Assumptions for default values:
+        # - the lane we are projecting is about 30 meters long and 3.7 meters wide
+        # - our camera image has 720 relevant pixels in the y-dimension (remember, our image is perspective-transformed)
+        # - our camera image has roughly 700 relevant pixels in the x-dimension
+        # These assumptions lead to the following definitions:
+        #
+        # Define conversions in x and y from pixels space to meters
+        self.metres_per_pixel_y = 30 / 720  # meters per pixel in y dimension
+        self.metres_per_pixel_x = 3.7 / 700  # meters per pixel in x dimension
+
+        # Number of windows to use for finding the lane line using sliding windows
+        self.num_sliding_windows = 20
+
+        # width of the windows +/- margin
+        self.margin_first_frame = 100
+        # minimum number of pixels found to recenter window
+        self.minipix_first_frame = 50
+        # The width of the margin around the previous polynomial to search
+        self.margin_second_frame = 100
+        self.minipix_second_frame = 50
+
+        # Min and max values for projecting the discovered lane onto the road image
+        self.min_lane_projection_width = 200
+        self.max_lane_projection_width = 1000
+        self.poly_fit_val = 100
+```
+
+These are the default values for the hyperparameters relating to binary thresholding:
+
+```python
+        self.sobel_thresh = (170, 255)
+        self.sobelx_thresh = (20, 100)
+        self.sobel_k_size = 3
+```
 
 You can watch the output of the pipeline applied to the project video on YouTube:
 [![Output of project video](https://img.youtube.com/vi/kzYbIra3nH8/0.jpg)](https://youtu.be/kzYbIra3nH8 "Project video")
