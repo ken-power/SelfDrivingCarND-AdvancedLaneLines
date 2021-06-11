@@ -2,6 +2,29 @@
 
 This project is part of [Udacity](https://www.udacity.com)'s [Self-driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013) program. The goal of this proejct is to write a software pipeline to identify the lane boundaries in a video. 
 
+# Contents
+* [Project goals](#Project-goals)
+* [Solution overview](#Solution-overview)
+* [Software design](#Software-design)
+* [Pipeline summary](#Pipeline-summary)
+* [Camera calibration](#Camera-calibration)
+* [The Pipeline](#The-Pipeline)
+  * [Distortion correction](#Distortion-correction)
+  * [Thresholded binary image](#Thresholded-binary-image)
+  * [Perspective transform](#Perspective-transform)
+  * [Identify lane pixels](#Identify-lane-pixels)
+  * [Radius of curvature and vehicle position](#Radius-of-curvature-and-vehicle-position)
+  * [Plotting lane back onto the road](#Plotting-lane-back-onto-the-road)
+  * [Final output image](#Final-output-image)
+    * [Additional examples](#Additional-examples)
+* [Pipeline video](#Pipeline-video)
+  * [Project video](#Project-video)
+  * [Optional challenge videos](#Optional-challenge-videos)
+    * [Challenge video](#Challenge-video)
+    * [Harder challenge video](#Harder-challenge-video)
+* [Discussion](#Discussion)
+* [References](#References)
+
 
 # Project goals
 
@@ -26,7 +49,7 @@ There are two files that execute the `lane_finding` module:
 * [process_images.py](process_images.py) executes the `lane_finding` module and runs the set of test images through the image processing pipeline.
 * [process_video.py](process_video.py) executes the `lane_finding` module and runs the three test videos through the image processing pipeline.
 
-## Code structure
+# Software design
 The design of the lane finding module follows a basic Model-View-Controller pattern. This directory layout reflects this pattern, with each part in its own sub-directory:
 ```text
 lane_finding/
@@ -63,7 +86,7 @@ lane_finding/
   * The [HyperParameters](lane_finding/controller/hyperparameters.py) class. [HyperParameters](lane_finding/controller/hyperparameters.py) contains parameters that allow us to tune the image processing pipeline for different scenarios. For example, I use the same pipeline code on all three videos for this project, but tune the hyperparameters differently for each video. Examples [are shown below](#Project-video).
 
 
-## Pipeline summary
+# Pipeline summary
 
 The camera calibration matrix and distortion coefficients are computed when the pipeline is initialized. 
 ```python
@@ -115,7 +138,7 @@ final_image = self.image_builder.add_overlays_to_main_image(image_with_detected_
                                                             self.hyperparameters.image_frame_number)
 ```
 
-## Camera calibration
+# Camera calibration
 Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 
 Udacity provided two sets of images for testing. The folder called [camera_cal](data/camera_cal) contains the images for camera calibration.  The images in [test_images](data/test_images) are for testing the pipeline on single frames.  
@@ -173,9 +196,9 @@ The full source code for the [CameraCalibrator](lane_finding/model/camera_calibr
 
 
 
-## Pipeline
+# Pipeline
 
-### Distortion correction
+## Distortion correction
 The first step in the pipeline is use the camera matrix and distortion coefficients obtained when calibrating the camerea, and use these to apply a distortion correction to the incoming raw image. 
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -234,7 +257,7 @@ These next examples show road images before and after calibration:
 
 The sections below show many more examples of calibrated images moving through the pipeline.
 
-### Thresholded binary image
+## Thresholded binary image
 The next step in the pipeline uses color transforms, gradients, etc., to create a thresholded binary image.
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -300,7 +323,7 @@ def convert_to_binary(self, img, hyperparameters):
     return sxbinary, s_binary, color_binary, combined_binary
 ```
 
-### Perspective transform
+## Perspective transform
 The next step in the pipeline applies a perspective transform to rectify binary image ("birds-eye view").
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -347,7 +370,7 @@ class PerspectiveTransformer:
         return warped, M, Minv
 ```
 
-### Identify lane pixels
+## Identify lane pixels
 The next step in the pipeline detects lane pixels and fit to find the lane boundary.
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -383,7 +406,7 @@ def find_lane_lines(self,
 
 The function delegates to the `get_polynomial_coeffs_using_sliding_window()` function for the first frame in a video pipeline, and to the `get_polynomial_coeffs_using_previous_laneline_position()` function for the second and subsequent frames. If we lose track of the pixels, e.g., due to poor lighting or other conditions, we reset and go back to searching for the lane lines using the sliding window function.
 
-### Radius of curvature and vehicle position
+## Radius of curvature and vehicle position
 We also need to determine the curvature of the lane and vehicle position with respect to center.
 
 The radius of curvature of a lane line is calculated in the [Line](lane_finding/model/line.py) class:
@@ -447,7 +470,7 @@ def offset_and_position(self,
 
 The final output image displays these calculations. Visual examples are shown below, and can also be seen in the output videos.
 
-### Plotting lane back onto the road
+## Plotting lane back onto the road
 The next step in the pipeline warps the detected lane boundaries back onto the original image.
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -466,7 +489,7 @@ Undistorted Image | Lane on Road Image
 
 The [ImageBuilder](lane_finding/view/image_builder.py) class contains the code that implements this.
 
-### Final output image
+## Final output image
 The final step in the pipeline creates the final output image, and displays the radius of curvature and the vehicle position and offset. I also opted to include intermediate pipeline images as insets/overlays, and also the frame number.
 
 This is the relevant line of code from the [Pipeline](lane_finding/controller/pipeline.py) `process()` function:
@@ -487,36 +510,36 @@ final_image = self.image_builder.add_overlays_to_main_image(image_with_detected_
 
 The [ImageBuilder](lane_finding/view/image_builder.py) class contains the code that implements this.
 
-#### Additional examples
+### Additional examples
 Here are some more examples of final image frames from my project video output. I chose these to show specific interesting points during the video. 
 
-##### Frame 111
+#### Frame 111
 **Scenario**: Long stretch of relatively straight road with a bend up ahead to the left.
 
 ![Final Output Image Frmae 111](data/test_pipeline_images/images_from_project_video/111_6_final_image.jpg)
 
-##### Frame 314
+#### Frame 314
 **Scenario**: Long stretch of relatively straight road with a car passing on the right.
 
 ![Final Output Image Frmae 314](data/test_pipeline_images/images_from_project_video/314_6_final_image.jpg)
 
-##### Frame 553
+#### Frame 553
 **Scenario**: Passing through an area of road with a lot of bright light causing glare on the road, and making it harder to see the lane lines.
 
 ![Final Output Image Frmae 553](data/test_pipeline_images/images_from_project_video/553_6_final_image.jpg)
 
-##### Frame 607
+#### Frame 607
 **Scenario**: Transitioning from an area of road with a lot of bright light causing glare on the road, back to more favorable lighting conditions, and bending to the right up ahead.
 
 ![Final Output Image Frmae 607](data/test_pipeline_images/images_from_project_video/607_6_final_image.jpg)
 
 
-## Pipeline video
+# Pipeline video
 The video pipeline outputs a visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position. The file [process_video.py](process_video.py) contains the code that exectures the pipeline for each of the three test videos provided. 
 
 
 
-### Project video
+## Project video
 
 The input video is [here](data/test_videos/project_video.mp4). The output video is [here](output_videos/out_project_video.mp4):
 
@@ -539,12 +562,12 @@ You can watch the output of the pipeline applied to the project video on YouTube
 [![Output of project video](https://img.youtube.com/vi/kzYbIra3nH8/0.jpg)](https://youtu.be/kzYbIra3nH8 "Project video")
 
 
-### Optional challenge videos
+## Optional challenge videos
 
 The [challenge_video.mp4](data/test_videos/challenge_video.mp4) video is an extra (and optional) challenge to test the pipeline under somewhat trickier conditions.  The [harder_challenge.mp4](data/test_videos/harder_challenge_video.mp4) video is another optional challenge and is brutal!
 
 
-#### Challenge video
+### Challenge video
 
 The input video is [here](data/test_videos/challenge_video.mp4). The output video is [here](output_videos/out_challenge_video.mp4):
 
