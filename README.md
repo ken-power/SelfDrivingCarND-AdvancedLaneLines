@@ -196,7 +196,7 @@ The full source code for the [CameraCalibrator](lane_finding/model/camera_calibr
 
 
 
-# Pipeline
+# The Pipeline
 
 ## Distortion correction
 The first step in the pipeline is use the camera matrix and distortion coefficients obtained when calibrating the camerea, and use these to apply a distortion correction to the incoming raw image. 
