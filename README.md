@@ -16,7 +16,7 @@ This project is part of [Udacity](https://www.udacity.com)'s [Self-driving Car E
   * [Radius of curvature and vehicle position](#Radius-of-curvature-and-vehicle-position)
   * [Plotting lane back onto the road](#Plotting-lane-back-onto-the-road)
   * [Final output image](#Final-output-image)
-    * [Additional examples](#Additional-examples)
+  * [Additional examples](#Additional-examples)
 * [Pipeline video](#Pipeline-video)
   * [Project video](#Project-video)
   * [Optional challenge videos](#Optional-challenge-videos)
@@ -514,25 +514,25 @@ final_image = self.image_builder.add_overlays_to_main_image(image_with_detected_
 
 The [ImageBuilder](lane_finding/view/image_builder.py) class contains the code that implements this.
 
-### Additional examples
+## Additional examples
 Here are some more examples of final image frames from my project video output. I chose these to show specific interesting points during the video. 
 
-#### Frame 111
+### Frame 111
 **Scenario**: Long stretch of relatively straight road with a bend up ahead to the left.
 
 ![Final Output Image Frmae 111](data/test_pipeline_images/images_from_project_video/111_6_final_image.jpg)
 
-#### Frame 314
+### Frame 314
 **Scenario**: Long stretch of relatively straight road with a car passing on the right.
 
 ![Final Output Image Frmae 314](data/test_pipeline_images/images_from_project_video/314_6_final_image.jpg)
 
-#### Frame 553
+### Frame 553
 **Scenario**: Passing through an area of road with a lot of bright light causing glare on the road, and making it harder to see the lane lines.
 
 ![Final Output Image Frmae 553](data/test_pipeline_images/images_from_project_video/553_6_final_image.jpg)
 
-#### Frame 607
+### Frame 607
 **Scenario**: Transitioning from an area of road with a lot of bright light causing glare on the road, back to more favorable lighting conditions, and bending to the right up ahead.
 
 ![Final Output Image Frmae 607](data/test_pipeline_images/images_from_project_video/607_6_final_image.jpg)
