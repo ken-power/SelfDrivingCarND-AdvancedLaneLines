@@ -8,7 +8,7 @@ This project is part of [Udacity](https://www.udacity.com)'s [Self-driving Car E
 * [Software design](#Software-design)
 * [Pipeline summary](#Pipeline-summary)
 * [Camera calibration](#Camera-calibration)
-* [The Pipeline](#The-Pipeline)
+* [The Pipeline](#The-pipeline)
   * [Distortion correction](#Distortion-correction)
   * [Thresholded binary image](#Thresholded-binary-image)
   * [Perspective transform](#Perspective-transform)
@@ -631,6 +631,8 @@ def test_harder_challenge_video(self):
     clip.write_videofile(VIDEO_OUTPUT_FILE_BASE_PATH + video_name, audio=self.enable_audio)
 ```
 
-## Discussion
+# Discussion
+
+# References
 
 
