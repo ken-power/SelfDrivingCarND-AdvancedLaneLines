@@ -48,9 +48,19 @@ lane_finding/
      |-- config_data
 ```
 
-* [Model](lane_finding/model) contains the core abstractions for camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py)), distortion correction ([DistortionCorrector](lane_finding/model/distortion_corrector.py)), color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py)), perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py)), lanes ([Lane](lane_finding/model/lane.py)), and lane lines ([Line](lane_finding/model/line.py)).
-* [View](lane_finding/view) contains two classes that manage the presentation logic. [ImagePlotter](lane_finding/view/image_plotter.py) takes care of plotting images, and provides a number of utility functions for plotting various image combinations. [ImageBuilder](lane_finding/view/image_builder.py) is that class that builds the final output image with the lane highlihgted on the road. This class manages the overlay of inset images and text on the main image. 
-* [Controller](lane_finding/controller) contains the [Pipeline](lane_finding/controller/pipeline.py) class and a [HyperParameters](lane_finding/controller/hyperparameters.py) class. [Pipeline](lane_finding/controller/pipeline.py) processes images through the pipeline.  [HyperParameters](lane_finding/controller/hyperparameters.py) contains parameters that allow us to tune the image processing pipeline for different scenarios. For example, I use the same pipeline code on all three videos for this project, but tune the hyperparameters differently for each video. Examples [are shown below](#Project-video).
+* [Model](lane_finding/model) contains the core domain abstractions. 
+  * camera calibration ([CameraCalibrator](lane_finding/model/camera_calibrator.py))
+  * distortion correction ([DistortionCorrector](lane_finding/model/distortion_corrector.py))
+  * color thresholding ([ColorThresholdConverter](lane_finding/model/color_threshold_converter.py))
+  * perspective transformation([PerspectiveTransformer](lane_finding/model/perspective_transformer.py))
+  * lanes ([Lane](lane_finding/model/lane.py))
+  * lane lines ([Line](lane_finding/model/line.py))
+* [View](lane_finding/view) contains two classes that manage the presentation logic. 
+  * [ImagePlotter](lane_finding/view/image_plotter.py) takes care of plotting images - I use this for testing and for creating documentation. It provides a number of utility functions for plotting various image combinations.
+  * [ImageBuilder](lane_finding/view/image_builder.py) is that class that builds the final output image with the lane highlihgted on the road. This class manages the overlay of inset images and text on the main image. 
+* [Controller](lane_finding/controller) controls the flow of execition. 
+  * The [Pipeline](lane_finding/controller/pipeline.py) class implements a classic pipeline architecture, and chains together the inputs and outputs of the various model elements to process images through the pipeline.
+  * The [HyperParameters](lane_finding/controller/hyperparameters.py) class. [HyperParameters](lane_finding/controller/hyperparameters.py) contains parameters that allow us to tune the image processing pipeline for different scenarios. For example, I use the same pipeline code on all three videos for this project, but tune the hyperparameters differently for each video. Examples [are shown below](#Project-video).
 
 
 ## Pipeline summary
