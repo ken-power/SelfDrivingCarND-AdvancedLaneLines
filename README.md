@@ -88,6 +88,10 @@ lane_finding/
 
 # Pipeline summary
 
+This sequence diagram is a visual representation of how the pipeline processes a raw image frame:
+
+![Pipeline Sequence Diagram](images/pipeline-sequence-diagram.png)
+
 The camera calibration matrix and distortion coefficients are computed when the pipeline is initialized. 
 ```python
 # Calibrate the camera when the pipeline is first created
@@ -121,7 +125,7 @@ image_with_detected_lane = self.image_builder.draw_lane_on_road(undistorted_imag
                                                                 keep_state=self.hyperparameters.keep_state)
 
 ```
-
+Next, the pipeline adds the radius, vehicle position, and inset pipeline images to the main image. 
 ```python
 # STEP 6. Add inset images and text to the main image
 self.calculate_lane_metrics(birdseye_image.shape[0], birdseye_image.shape[1])
