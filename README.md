@@ -2,6 +2,8 @@
 
 This project is part of [Udacity](https://www.udacity.com)'s [Self-driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013) program. The goal of this proejct is to write a software pipeline to identify the lane boundaries in a video. 
 
+![](images/pipeline-scene-1.gif)
+
 # Contents
 * [Project goals](#Project-goals)
 * [Solution overview](#Solution-overview)
@@ -412,6 +414,11 @@ def find_lane_lines(self,
 
 The function delegates to the `get_polynomial_coeffs_using_sliding_window()` function for the first frame in a video pipeline, and to the `get_polynomial_coeffs_using_previous_laneline_position()` function for the second and subsequent frames. If we lose track of the pixels, e.g., due to poor lighting or other conditions, we reset and go back to searching for the lane lines using the sliding window function.
 
+The following animation shows the pipeline determining the lane pixels based on previous fit, then switching momentarily to using the sliding window approach when the lighting conditions change, then switching back to fitting using the previous frame approach. Watch the inset in the top right to see the changes. Note the lane detection continues to work smoothly during these transitions.
+
+![Pipeline scene](images/pipeline-scene-2.gif)
+
+
 ## Radius of curvature and vehicle position
 We also need to determine the curvature of the lane and vehicle position with respect to center.
 
@@ -679,6 +686,8 @@ def test_harder_challenge_video(self):
 # Discussion
 
 The  [project video](#project-video) turned out quite well. The pipeline adapts nicely to changing road conditions.
+
+![](images/pipeline-scene-3.gif)
 
 The [challenge video](#challenge-video) and the [harder challenge video](#harder-challenge-video) required a lot more work. The rapidly-changing road environment presented a bigger challenge than the main project video.  Tuning the [hyperparameters](#hyperparameter-default-values) was instrumental in getting something working for them.  
 
