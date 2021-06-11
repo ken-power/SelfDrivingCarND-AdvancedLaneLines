@@ -243,6 +243,7 @@ class DistortionCorrector:
 
         return undistorted_image
 ```
+These images show the result of applying the distortion correction to the [chessboard images](data/camera_cal).
 
 ![Calibrated Chessboard Images](output_images/calibrated_chessboard_images.png)
 
